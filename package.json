@@ -1,0 +1,19 @@
+{
+  "name": "medical_equipment_import_export",
+  "version": "1.0.0",
+  "description": "the backend of the site",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "author": "Kayowak melese",
+  "license": "ISC",
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.4.0"
+  }
+}
