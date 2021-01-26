@@ -2,7 +2,7 @@ const { Model } = require('sequelize')
 module.exports=(sequelize,DataTypes)=>{
     class Category extends Model{
         static associate(Models){
-    
+            Category.hasMany(Models.SubCategory)
         }
     }
     Category.init({

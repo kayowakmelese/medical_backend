@@ -27,10 +27,10 @@ module.exports={
         })
     },
     newSubCategory:(req,res)=>{
-        db.SUbCategory.create({
+        db.SubCategory.create({
             name:req.name,
-            description:req.description,
-            CategoryId:req.categoryId
+            description:req.body.description,
+            CategoryId:req.body.categoryId
         }).then(res.json(message(1,"created successfully"))).catch(function(err){
             res.json(message(0,err))})
     },
@@ -53,6 +53,22 @@ module.exports={
             price:req.body.price,
             ItemId:req.body.itemid
         }).then(res.json(message(1,"created successfully"))).catch(function(err){
+            res.json(message(0,err))})
+    },
+    listCategory:(req,res)=>{
+        db.Category.findAll({
+            include:[db.SubCategory]
+        }).then((data)=>res.json(data)).catch(function(err){
+            res.json(message(0,err))})
+    },
+    listSubCategory:(req,res)=>{
+        db.SubCategory.findAll(
+            {
+                where:{
+                    CategoryId:req.body.CategoryId
+                },include:[db.Category]
+            }
+        ).then((data)=>res.json(data)).catch(function(err){
             res.json(message(0,err))})
     }
 

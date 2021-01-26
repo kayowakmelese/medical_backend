@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
-
+var admin=require('./routes/adminRoute')
 var db = require('./models');
 var http = require('http').Server(app);
 var router = express.Router();
@@ -24,6 +24,7 @@ app.get('/sync', function(req, res) {
 app.get('/drop', function(req, res) {
     db.sequelize.drop().then(async data => await res.send("completed")).catch(err => console.log("error" + err));
 })
+app.use('/api/admin/',admin)
 app.listen(355,()=>{
-    console.log("started the server")
+    console.log("started the server on http://localhost:355")
 })

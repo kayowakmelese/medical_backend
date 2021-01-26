@@ -4,6 +4,7 @@ module.exports=(sequelize,DataTypes)=>{
     class Item extends Model{
         static associate(Models){
             Item.belongsTo(Models.Product)
+            Item.hasOne(Models.ItemPrice)
         }
     }
     Item.init({
