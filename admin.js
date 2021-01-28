@@ -37,7 +37,7 @@ module.exports={
     newProduct:(req,res)=>{
         db.Product.create({
             name:req.body.name,
-            SUbCategoryId:req.body.subCategory
+            SubCategoryId:req.body.subCategory
         }).then(res.json(message(1,"created successfully"))).catch(function(err){
             res.json(message(0,err))})
     },
@@ -57,7 +57,7 @@ module.exports={
     },
     listCategory:(req,res)=>{
         db.Category.findAll({
-            include:[db.SubCategory]
+            include:[{model:db.SubCategory,include:[db.Product]}]
         }).then((data)=>res.json(data)).catch(function(err){
             res.json(message(0,err))})
     },
