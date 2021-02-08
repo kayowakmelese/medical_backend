@@ -1,30 +1,37 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var admin=require('./routes/adminRoute')
-var db = require('./models');
-var http = require('http').Server(app);
-var router = express.Router();
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Headers', '*');
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'PUT', 'POST', 'GET');
-        return res.status(200).json({});
-    }
-    next();
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
+const db = {};
+
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
+
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
 });
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-//app.use(upload.array());
-app.use(express.static('public'));
-app.get('/sync', function(req, res) {
-    db.sequelize.sync({ forced: true, logging: console.log }).then(res.json({ "completed": "true" }).catch(async data => await console.log("kkkkkkkkkkkkkkkk" + data)));
-});
-app.get('/drop', function(req, res) {
-    db.sequelize.drop().then(async data => await res.send("completed")).catch(err => console.log("error" + err));
-})
-app.use('/api/admin/',admin)
-app.listen(355,()=>{
-    console.log("started the server on http://localhost:355")
-})
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;
