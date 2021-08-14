@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon index.js"
+    "start":"node index.js"
   },
   "author": "Kayowak melese",
   "license": "ISC",
