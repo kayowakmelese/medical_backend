@@ -4,7 +4,7 @@
   "description": "the backend of the site",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "nodemon index.js",
     "start":"node index.js"
   },
   "author": "Kayowak melese",
